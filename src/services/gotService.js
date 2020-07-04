@@ -1,3 +1,4 @@
+
 export default class GotService {
     constructor(){
         this._apiBase = 'https://www.anapioficeandfire.com/api'                      //_apiBase - означає щоб ніхто не змінював
@@ -9,18 +10,52 @@ export default class GotService {
         }
         return await res.json();
     };
-    getAllBooks(){                                                                     //оприділяє всіх персонажів
+
+    async getAllCharacters(){                                                                     //оприділяє всіх персонажів
+        const res = await this.getResource('/characters?page=5')
+        return res.map(this._transformCharacter);
+    }
+    async getCharacter(id){                                                                     //оприділяє одного персонажа
+        const character = await this.getResource(`/characters/${id}`)
+        return this._transformCharacter(character)
+    }
+    getAllBooks(){                                                                     
         return this.getResource('/books')
     }
-    getBook(id){                                                                     //оприділяє одного персонажа
+    getBook(id){                                                                     
         return this.getResource(`/books/${id}`)
     }
+    getAllHouses(){
+        return this.getResource(`/houses`)
+    }
+    getHouse(id){
+        return this.getResource(`/houses/${id}`)
+    }
+    _transformCharacter(char) {
+                return {
+                name: char.name,
+                gender: char.gender,
+                born: char.born,
+                died: char.died,
+                culture: char.culture
+                }
+    }
+    _transformHouse(house) {
+                return {
+                    name: house.name,
+                    region: house.region,
+                    words: house.words,
+                    titles: house.titles,
+                    overlord: house.overlord,
+                    ancestraWeapon: house.ancestraWeapon
+                }
+    }
+    _transformBook(book) {
+        return {
+            name: book.name,
+            numberOfPages: book.numberOfPages,
+            publiser: book.publiser,
+            released: book.released
+        }
+    }
 }
-
-// const got = new GotService();
-
-// got.getAllBooks()
-// .then(res => console.log(res));
-
-// got.getBook(9)
-// .then(res => console.log(res));
