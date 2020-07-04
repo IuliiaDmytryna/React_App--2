@@ -1,35 +1,47 @@
 
 export default class GotService {
-    constructor(){
-        this._apiBase = 'https://www.anapioficeandfire.com/api'                      //_apiBase - означає щоб ніхто не змінював
+    constructor() {
+        this._apiBase = 'https://www.anapioficeandfire.com/api';
     }
+
     async getResource(url) {
         const res = await fetch(`${this._apiBase}${url}`);
-        if(!res.ok){
-            throw new Error(`Could not fetch ${url}, status ${res.status}`)
+    
+        if (!res.ok) {
+          throw new Error(`Could not fetch ${url}` +
+            `, received ${res.status}`);
         }
         return await res.json();
-    };
+    }
 
-    async getAllCharacters(){                                                                     //оприділяє всіх персонажів
-        const res = await this.getResource('/characters?page=5')
+    async getAllBooks() {
+        const res = await this.getResource(`/books/`);
+        return res.map(this._transformBook);
+    }
+    
+    async getBook(id) {
+        const book = await this.getResource(`/books/${id}/`);
+        return this._transformBook(book);
+    }
+    
+    async getAllCharacters() {
+        const res = await this.getResource(`/characters?page=5&pageSize=10`);
         return res.map(this._transformCharacter);
     }
-    async getCharacter(id){                                                                     //оприділяє одного персонажа
-        const character = await this.getResource(`/characters/${id}`)
-        return this._transformCharacter(character)
+    
+    async getCharacter(id) {
+        const character = await this.getResource(`/characters/${id}`);
+        return this._transformCharacter(character);
     }
-    getAllBooks(){                                                                     
-        return this.getResource('/books')
+    
+    async getAllHouses() {
+        const res = await this.getResource(`/houses/`);
+        return res.map(this._transformHouse);
     }
-    getBook(id){                                                                     
-        return this.getResource(`/books/${id}`)
-    }
-    getAllHouses(){
-        return this.getResource(`/houses`)
-    }
-    getHouse(id){
-        return this.getResource(`/houses/${id}`)
+    
+    async getHouse(id) {
+        const house = this.getResource(`/houses/${id}/`);
+        return this._transformHouse(house);
     }
     _transformCharacter(char) {
                 return {
