@@ -54,7 +54,7 @@ export default class App extends Component {
                 <CharacterPage/>
                 <Row>
                     <Col md='6'>
-        <ItemList onCharSelected = {this.onCharSelected} getData = {this.gotService.getAllBooks} renderItem = {(item) => <><span>{item.name}</span><button>Click me</button></>}/>
+        <ItemList onItemSelected = {this.onItemSelected} getData = {this.gotService.getAllBooks} renderItem = {(item) => <><span>{item.name}</span><button>Click me</button></>}/>
                     </Col>
                     <Col md='6'>
                         <CharDetails charId = {this.state.selectedChar}/>
@@ -62,7 +62,7 @@ export default class App extends Component {
                 </Row>
                 <Row>
                     <Col md='6'>
-                    <ItemList onCharSelected = {this.onCharSelected} getData = {this.gotService.getAllHouses} renderItem = {(item) => item.name}/>
+                    <ItemList onItemSelected = {this.onItemSelected} getData = {this.gotService.getAllHouses} renderItem = {(item) => item.name}/>
                     </Col>
                     <Col md='6'>
                         <CharDetails charId = {this.state.selectedChar}/>
